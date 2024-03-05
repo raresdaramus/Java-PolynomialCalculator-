@@ -10,10 +10,12 @@ public class PolynomialParser {
         String normalizedInput = input.replaceAll("\\s", "");
 
         // Use regular expression to match terms in the polynomial
+        //this could be simpler
         Matcher matcher = Pattern.compile("([-+]?(\\d+(\\.\\d*)?|\\.\\d+)?x(\\^(\\d+))?|[-+]?(\\d+(\\.\\d*)?|\\.\\d+))").matcher(normalizedInput);
 
         while (matcher.find()) {
             // Parse the matched term
+
             double coefficient = (matcher.group(2) != null && !matcher.group(2).isEmpty()) ?
                     Double.parseDouble(matcher.group(2)) : (normalizedInput.startsWith("-") ? -1.0 : 1.0);
             int exponent = (matcher.group(5) != null && !matcher.group(5).isEmpty()) ?
