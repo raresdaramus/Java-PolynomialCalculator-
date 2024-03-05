@@ -18,7 +18,7 @@ public class Menu extends JFrame {
     public Menu() {
         setContentPane(Panel);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(400, 200);
+        setSize(600, 200);
         setTitle("Polynomial Calculator");
 
         additionButton.addActionListener(new ActionListener() {
