@@ -25,6 +25,7 @@ public class Polynomial {
     }
 
     @Override
+    //not sure if this works properly
     public String toString() {
         StringBuilder result = new StringBuilder();
         Map<Integer, Double> sortedTerms = getTerms();
