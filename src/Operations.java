@@ -32,10 +32,10 @@ public class Operations {
     public static Map<Integer, Double> multiplyPolynomials(Map<Integer, Double> polyMap1, Map<Integer, Double> polyMap2) {
         Map<Integer, Double> result = new HashMap<>();
 
-        for (Map.Entry<Integer, Double> entry1 : polyMap1.entrySet()) {
-            for (Map.Entry<Integer, Double> entry2 : polyMap2.entrySet()) {
-                int exponent = entry1.getKey() + entry2.getKey();
-                double coefficient = entry1.getValue() * entry2.getValue();
+        for (Map.Entry<Integer, Double> term1 : polyMap1.entrySet()) {
+            for (Map.Entry<Integer, Double> term2 : polyMap2.entrySet()) {
+                int exponent = term1.getKey() + term2.getKey();
+                double coefficient = term1.getValue() * term2.getValue();
 
                 result.merge(exponent, coefficient, Double::sum);
             }
@@ -43,6 +43,7 @@ public class Operations {
 
         return result;
     }
+
 
 
     public static Map<Integer, Double> derivative(Map<Integer, Double> polyMap) {
@@ -67,11 +68,18 @@ public class Operations {
             int exponent = entry.getKey();
             double coefficient = entry.getValue();
 
-            result.put(exponent + 1, coefficient / (exponent + 1));
+            if (exponent == 0) {
+                // For the constant term, the integral is the coefficient times x
+                result.put(1, coefficient);
+            } else {
+                // For non-constant terms, increase the exponent by 1 and divide the coefficient by the new exponent
+                result.put(exponent + 1, coefficient / (double)(exponent + 1));
+            }
         }
 
         return result;
     }
+
 
     //implement division
 }

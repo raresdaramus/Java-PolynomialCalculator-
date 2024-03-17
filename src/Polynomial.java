@@ -7,6 +7,10 @@ public class Polynomial {
         terms = new HashMap<>();
     }
 
+    public Polynomial(Map<Integer, Double> terms) {
+        this.terms = new HashMap<>(terms);
+    }
+
     public void addTerm(int exponent, double coefficient) {
         // If the exponent already exists, add the coefficients
         if (terms.containsKey(exponent)) {
@@ -18,28 +22,44 @@ public class Polynomial {
     }
 
     public Map<Integer, Double> getTerms() {
-        // Sort the terms by exponent in descending order
-        TreeMap<Integer, Double> sortedTerms = new TreeMap<>(Comparator.reverseOrder());
-        sortedTerms.putAll(terms);
-        return sortedTerms;
+        return terms;
     }
 
     @Override
-    //not sure if this works properly
     public String toString() {
         StringBuilder result = new StringBuilder();
-        Map<Integer, Double> sortedTerms = getTerms();
+
+        // Sort the terms by exponent in descending order
+        TreeMap<Integer, Double> sortedTerms = new TreeMap<>(Comparator.reverseOrder());
+        sortedTerms.putAll(terms);
 
         for (Map.Entry<Integer, Double> term : sortedTerms.entrySet()) {
             int exponent = term.getKey();
             double coefficient = term.getValue();
-            result.append(coefficient).append("x^").append(exponent).append(" + ");
-        }
 
-        if (result.length() > 0) {
-            result.delete(result.length() - 3, result.length()); // Remove the trailing " + "
+            if (coefficient == 0.0)
+                result.append("");
+            else {
+                if (result.length() > 0) {
+                    if (coefficient >= 0) {
+                        result.append(" + ");
+                    } else {
+                        result.append(" - ");
+                        coefficient = Math.abs(coefficient);
+                    }
+                }
+
+                result.append(coefficient);
+
+                if (exponent > 0) {
+                    result.append("x^").append(exponent);
+                }
+            }
         }
 
         return result.toString();
     }
+
+
+
 }

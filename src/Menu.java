@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
@@ -57,52 +58,54 @@ public class Menu extends JFrame {
         });
     }
 
-    private void performOperation(String operation) {
+    private Polynomial performOperation(String operation) {
         Polynomial poly1 = parsePolynomial(textField1.getText());
         Polynomial poly2 = parsePolynomial(textField2.getText());
-
-        Map<Integer, Double> result;
+        Polynomial result;
 
         switch (operation) {
             case "Addition":
-                result = Operations.addPolynomials(poly1.getTerms(), poly2.getTerms());
+                result = new Polynomial(Operations.addPolynomials(poly1.getTerms(), poly2.getTerms()));
                 break;
             case "Subtraction":
-                result = Operations.subtractPolynomials(poly1.getTerms(), poly2.getTerms());
+                result = new Polynomial(Operations.subtractPolynomials(poly1.getTerms(), poly2.getTerms()));
                 break;
             case "Multiplication":
-                result = Operations.multiplyPolynomials(poly1.getTerms(), poly2.getTerms());
+                result = new Polynomial(Operations.multiplyPolynomials(poly1.getTerms(), poly2.getTerms()));
                 break;
             case "Derivative":
-                result = Operations.derivative(poly1.getTerms());
+                result = new Polynomial(Operations.derivative(poly1.getTerms()));
                 break;
             case "Integration":
-                result = Operations.integrate(poly1.getTerms());
+                result = new Polynomial(Operations.integrate(poly1.getTerms()));
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported operation: " + operation);
         }
 
         displayResult(result);
+        return result;
     }
+
     private Polynomial parsePolynomial(String polynomial) {
         return PolynomialParser.parse(polynomial);
     }
 
-
-    private void displayResult(Map<Integer, Double> result) {
-        StringBuilder resultText = new StringBuilder("Result:\n");
-
-        for (Map.Entry<Integer, Double> entry : result.entrySet()) {
-            int exponent = entry.getKey();
-            double coefficient = entry.getValue();
-            resultText.append(coefficient).append("x^").append(exponent).append("\n");
-        }
-
-        resultTextField.setText(resultText.toString());
+    private void displayResult(Polynomial result) {
+        resultTextField.setText(result.toString());
+        if(resultTextField.getText().isEmpty())
+            resultTextField.setText("0");
     }
 
+
     public static void main(String[] args) {
+        try {
+            // Set Nimbus look and feel
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
